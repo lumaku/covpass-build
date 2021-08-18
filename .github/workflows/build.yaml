@@ -3,9 +3,11 @@ env:
   RUNNING_ON_CI: "true"
   LC_ALL: C.UTF-8
   LANG: C.UTF-8
-  PUBLISH_APPS: "false"
-
-on: [push, pull_request]
+  PUBLISH_APPS: "true"
+  GITHUB_PACKAGES_USERNAME: ${{ github.actor }}
+  GITHUB_PACKAGES_PASSWORD: ${{ secrets.ACCESS_TOKEN }}
+  
+on: [push]
 
 jobs:
   build:
