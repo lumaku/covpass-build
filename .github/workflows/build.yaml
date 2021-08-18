@@ -36,3 +36,8 @@ jobs:
       - name: Find Apps
         run: |
           find ${{ github.workspace }} -name "*.apk"
+      - name: Upload Apps
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: CovPass-App-UNSIGNED
+          path: "**/covpassprod-*-debug.apk"
