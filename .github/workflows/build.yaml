@@ -20,8 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-            repository: 'Digitaler-Impfnachweis/covpass-android'
-            submodules: true
+          repository: 'Digitaler-Impfnachweis/covpass-android'
+          submodules: true
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Install JDK ${{ matrix.java_version }}
@@ -31,13 +31,22 @@ jobs:
           distribution: adopt
       - name: Configure Gradle
         run: ./gradlew help
+      - name: Write Version Code
+        run: |
+          cd ${{ github.workspace }} && bash write-version-code.sh
       - name: Build project
         run: ./gradlew assemble
       - name: Find Apps
         run: |
+          ls ${{ github.workspace }}
           find ${{ github.workspace }} -name "*.apk"
       - name: Upload Apps
         uses: actions/upload-artifact@v2.2.4
         with:
           name: CovPass-App-UNSIGNED
           path: "**/covpassprod-*-debug.apk"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.ACCESS_TOKEN }}"
+          automatic_release_tag: "latest"
+          files: "**/*.apk"
