@@ -11,7 +11,7 @@ on: [push]
 
 jobs:
   build:
-    name: Build and test (JDK ${{ matrix.java_version }})
+    name: Build CovPass App (JDK ${{ matrix.java_version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
             repository: 'Digitaler-Impfnachweis/covpass-android'
+            submodules: true
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Install JDK ${{ matrix.java_version }}
@@ -32,3 +33,6 @@ jobs:
         run: ./gradlew help
       - name: Build project
         run: ./gradlew assemble
+      - name: Find Apps
+        run: |
+          find ${{ github.workspace }} -name "*.apk"
